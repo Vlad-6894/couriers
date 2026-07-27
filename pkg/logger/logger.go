@@ -1,6 +1,7 @@
 package pkg_logger
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -13,6 +14,25 @@ import (
 type Logger struct {
 	*zap.Logger
 	file *os.File
+}
+
+type loggerContextKey struct{}
+
+var (
+	key = loggerContextKey{}
+)
+
+func ToContext(ctx context.Context, log *Logger) context.Context {
+	return context.WithValue(ctx, key, log)
+}
+
+func FromContext(ctx context.Context) *Logger {
+	log, ok := ctx.Value(key).(*Logger)
+	if !ok {
+		panic("No Logger in the context!")
+	}
+
+	return log
 }
 
 func NewLogger(config LoggerConfig) (*Logger, error) {
@@ -52,4 +72,17 @@ func NewLogger(config LoggerConfig) (*Logger, error) {
 		Logger: zapLogger,
 		file:   logFile,
 	}, nil
+}
+
+func (l *Logger) With(fields ...zap.Field) *Logger {
+	return &Logger{
+		Logger: l.Logger.With(fields...),
+		file:   l.file,
+	}
+}
+
+func (l *Logger) Close() {
+	if err := l.file.Close(); err != nil {
+		fmt.Println("Error to close loger: ", err)
+	}
 }

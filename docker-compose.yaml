@@ -32,7 +32,7 @@ services:
     restart: always
   
   couriers-kafka:
-    image: 
+    image: confluentinc/cp-kafka:7.6.0
     container_name: kafka
     environment:
       KAFKA_NODE_ID: 1
