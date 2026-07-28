@@ -8,13 +8,14 @@ import (
 	"net/http"
 )
 
-type RegisterRequestDTO struct {
+type RegisterUserResponseDTO struct {
+	ID       int    `json:"User_ID"`
 	Login    string `json:"Login"`
 	Password string `json:"Password"`
 	City     string `json:"City"`
 }
 
-func (h *AuthHTTPHandler) HandleRegister(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := pkg_logger.FromContext(ctx)
 	responseHandler := pkg_http_response.NewHTTPResponseHandler(log, w)
@@ -28,19 +29,31 @@ func (h *AuthHTTPHandler) HandleRegister(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	user := RegDtoToUserDomain(request)
+	user := regDtoToUserDomain(request)
 
-	if err := h.authService.Register(user); err != nil {
+	user, err := h.authService.RegisterUser(ctx, user)
+	if err != nil {
 		responseHandler.ErrorResponse(err, "fail to register user!")
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
+	response := regDtoFromUserDomain(user)
+
+	responseHandler.ToJSONResponse(response, http.StatusCreated)
 
 	log.Info("Finish Register person")
 }
 
-func RegDtoToUserDomain(dto RegisterRequestDTO) auth_domains.User {
+func regDtoToUserDomain(dto RegisterRequestDTO) auth_domains.User {
 	user := auth_domains.NewRegUser(dto.Login, dto.Password, dto.City)
 	return user
+}
+
+func regDtoFromUserDomain(user auth_domains.User) RegisterUserResponseDTO {
+	return RegisterUserResponseDTO{
+		ID:       user.ID,
+		Login:    user.Login,
+		Password: user.Password,
+		City:     user.City,
+	}
 }

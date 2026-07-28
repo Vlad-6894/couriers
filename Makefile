@@ -63,3 +63,6 @@ start-kafka:
 
 finish-kafka:
 	@docker compose down couriers-kafka
+
+print-jwt:
+	@openssl rand -hex 32
