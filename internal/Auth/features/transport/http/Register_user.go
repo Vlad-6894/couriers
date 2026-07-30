@@ -20,7 +20,7 @@ func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Requ
 	log := pkg_logger.FromContext(ctx)
 	responseHandler := pkg_http_response.NewHTTPResponseHandler(log, w)
 
-	log.Info("Start Register person")
+	log.Info("Start Register User")
 
 	var request RegisterRequestDTO
 
@@ -29,7 +29,7 @@ func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	user := regDtoToUserDomain(request)
+	user := regUserDtoToUserDomain(request)
 
 	user, err := h.authService.RegisterUser(ctx, user)
 	if err != nil {
@@ -37,19 +37,19 @@ func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	response := regDtoFromUserDomain(user)
+	response := regUserDtoFromUserDomain(user)
 
 	responseHandler.ToJSONResponse(response, http.StatusCreated)
 
-	log.Info("Finish Register person")
+	log.Info("Finish Register User")
 }
 
-func regDtoToUserDomain(dto RegisterRequestDTO) auth_domains.User {
+func regUserDtoToUserDomain(dto RegisterRequestDTO) auth_domains.User {
 	user := auth_domains.NewRegUser(dto.Login, dto.Password, dto.City)
 	return user
 }
 
-func regDtoFromUserDomain(user auth_domains.User) RegisterUserResponseDTO {
+func regUserDtoFromUserDomain(user auth_domains.User) RegisterUserResponseDTO {
 	return RegisterUserResponseDTO{
 		ID:       user.ID,
 		Login:    user.Login,

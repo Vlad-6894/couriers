@@ -15,8 +15,8 @@ type User struct {
 }
 
 var (
-	UninitializedUserID      = -1
-	UninitializedUserVersion = -1
+	UninitializedID      = -1
+	UninitializedVersion = -1
 )
 
 func NewUser(
@@ -41,8 +41,8 @@ func NewRegUser(
 	city string,
 ) User {
 	return User{
-		ID:       UninitializedUserID,
-		Version:  UninitializedUserVersion,
+		ID:       UninitializedID,
+		Version:  UninitializedVersion,
 		Login:    login,
 		Password: password,
 		City:     city,
