@@ -14,8 +14,8 @@ type Claims struct {
 }
 
 const (
-	User        = "User"
-	Courier     = "Courier"
+	User        = "user"
+	Courier     = "courier"
 	JwtKey      = "JWT_SECRET"
 	PersonIDKey = "Person-Id"
 	RoleKey     = "Role"
