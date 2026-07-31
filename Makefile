@@ -35,9 +35,9 @@ migrate-action:
 		echo "Нет параметра action"; \
 		exit 1; \
 	fi;
-	@docker compose run --rm postgres-migrate \
+	@docker compose run --rm couriers-postgres-db-migrate \
 		-path /migrations \
-		-database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@test-task-postgres:5432/${POSTGRES_DB}?sslmode=disable \
+		-database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@couriers-postgres-db:5432/${POSTGRES_DB}?sslmode=disable \
 		"$(action)"
 
 migrate-up:
@@ -63,3 +63,6 @@ start-kafka:
 
 finish-kafka:
 	@docker compose down couriers-kafka
+
+print-jwt:
+	@openssl rand -hex 32
