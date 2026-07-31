@@ -3,6 +3,8 @@ package auth_http_transport
 import (
 	"context"
 	auth_domains "couriers/internal/Auth/core/domains"
+	pkg_http_server "couriers/pkg/transport/http/server"
+	"net/http"
 )
 
 type AuthHTTPHandler struct {
@@ -57,5 +59,37 @@ type CourierResponseDTO struct {
 func NewAuthHTTPHandler(authService AuthService) *AuthHTTPHandler {
 	return &AuthHTTPHandler{
 		authService: authService,
+	}
+}
+
+func (h *AuthHTTPHandler) UserRoutes() []pkg_http_server.Route {
+	return []pkg_http_server.Route{
+		{
+			Method:  http.MethodPost,
+			Path:    "/auth/register",
+			Handler: h.HandleRegisterUser,
+		},
+
+		{
+			Method:  http.MethodPost,
+			Path:    "/auth/login",
+			Handler: h.HandleLoginUser,
+		},
+	}
+}
+
+func (h *AuthHTTPHandler) CourierRoutes() []pkg_http_server.Route {
+	return []pkg_http_server.Route{
+		{
+			Method:  http.MethodPost,
+			Path:    "/auth/register",
+			Handler: h.HandleRegisterCourier,
+		},
+
+		{
+			Method:  http.MethodPost,
+			Path:    "/auth/login",
+			Handler: h.HandleLoginCourier,
+		},
 	}
 }
