@@ -19,12 +19,29 @@ type AuthService interface {
 		ctx context.Context,
 		courier auth_domains.Courier,
 	) (auth_domains.Courier, error)
+
+	LoginUser(ctx context.Context, login string, password string) (string, error)
+
+	LoginCourier(ctx context.Context, login string, password string) (string, error)
 }
 
 type RegisterRequestDTO struct {
 	Login    string `json:"Login"`
 	Password string `json:"Password"`
 	City     string `json:"City"`
+}
+
+type RegisterUserResponseDTO struct {
+	ID       int    `json:"User_ID"`
+	Version  int    `json:"User_version"`
+	Login    string `json:"Login"`
+	Password string `json:"Password"`
+	City     string `json:"City"`
+}
+
+type LoginRequestDTO struct {
+	Login    string `json:"Login"`
+	Password string `json:"Password"`
 }
 
 type CourierResponseDTO struct {

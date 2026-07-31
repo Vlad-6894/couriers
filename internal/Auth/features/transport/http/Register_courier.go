@@ -35,6 +35,8 @@ func (h *AuthHTTPHandler) HandleRegisterCourier(w http.ResponseWriter, r *http.R
 	response := CreateCourierResponseDTO(regCourierDtoFromUserDomain(courier))
 
 	responseHandler.ToJSONResponse(response, http.StatusCreated)
+
+	log.Info("Finish Register Courier")
 }
 
 func regCourierDtoToUserDomain(dto RegisterRequestDTO) auth_domains.Courier {

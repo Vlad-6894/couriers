@@ -8,12 +8,7 @@ import (
 	"net/http"
 )
 
-type RegisterUserResponseDTO struct {
-	ID       int    `json:"User_ID"`
-	Login    string `json:"Login"`
-	Password string `json:"Password"`
-	City     string `json:"City"`
-}
+type CreateUserDTO RegisterUserResponseDTO
 
 func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -37,7 +32,7 @@ func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	response := regUserDtoFromUserDomain(user)
+	response := CreateUserDTO(regUserDtoFromUserDomain(user))
 
 	responseHandler.ToJSONResponse(response, http.StatusCreated)
 
@@ -52,6 +47,7 @@ func regUserDtoToUserDomain(dto RegisterRequestDTO) auth_domains.User {
 func regUserDtoFromUserDomain(user auth_domains.User) RegisterUserResponseDTO {
 	return RegisterUserResponseDTO{
 		ID:       user.ID,
+		Version:  user.Version,
 		Login:    user.Login,
 		Password: user.Password,
 		City:     user.City,

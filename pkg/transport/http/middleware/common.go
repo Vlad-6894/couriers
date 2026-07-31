@@ -1,11 +1,16 @@
 package pkg_http_middleware
 
 import (
+	pkg_jwt "couriers/pkg/jwt"
 	pkg_logger "couriers/pkg/logger"
 	pkg_http_response "couriers/pkg/transport/http/response"
 	"net/http"
+	"os"
+	"strconv"
+	"strings"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -43,6 +48,53 @@ func CORS() Middleware {
 	}
 }
 
+func Auth() Middleware {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			secretKey := os.Getenv(pkg_jwt.JwtKey)
+			if secretKey == "" {
+				panic("Fatal! Fail to get jwt secret key!")
+			}
+
+			jwtSecret := []byte(secretKey)
+
+			authHeader := r.Header.Get("Authorization")
+			if authHeader == "" {
+				http.Error(w, "There is no Token!", http.StatusUnauthorized)
+				return
+			}
+
+			tokenParts := strings.Split(authHeader, " ")
+			if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
+				http.Error(w, "Invalid token format!", http.StatusUnauthorized)
+				return
+			}
+			tokenString := tokenParts[0]
+
+			claims := &pkg_jwt.Claims{}
+			token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (any, error) {
+				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, jwt.ErrSignatureInvalid
+				}
+
+				return jwtSecret, nil
+			})
+
+			if err != nil || !token.Valid {
+				http.Error(w, "token does not valid!", http.StatusUnauthorized)
+				return
+			}
+
+			ctx := r.Context()
+			ctx = pkg_jwt.PersonIDToContext(ctx, claims.PersonID)
+			ctx = pkg_jwt.RoleToContext(ctx, claims.Role)
+			ctx = pkg_jwt.CityToContext(ctx, claims.City)
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
 func RequestID() Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +111,7 @@ func RequestID() Middleware {
 	}
 }
 
-func Logger(logger *pkg_logger.Logger) Middleware {
+func LoggerForAuthService(logger *pkg_logger.Logger) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			requestID := r.Header.Get(RequestIDKey)
@@ -67,6 +119,33 @@ func Logger(logger *pkg_logger.Logger) Middleware {
 			log := logger.With(zap.String("request_ID", requestID), zap.String("URL", r.URL.String()))
 
 			ctx := pkg_logger.ToContext(r.Context(), log)
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
+func Logger(logger *pkg_logger.Logger) Middleware {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx := r.Context()
+			personID := pkg_jwt.PersonIDFromContext(ctx)
+			role := pkg_jwt.RoleFromContext(ctx)
+			city := pkg_jwt.CityFromContext(ctx)
+
+			personIDStr := strconv.Itoa(personID)
+
+			requestID := r.Header.Get(RequestIDKey)
+
+			log := logger.With(
+				zap.String("request_ID", requestID),
+				zap.String("URL", r.URL.String()),
+				zap.String("person_ID", personIDStr),
+				zap.String("role", role),
+				zap.String("city", city),
+			)
+
+			ctx = pkg_logger.ToContext(ctx, log)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})

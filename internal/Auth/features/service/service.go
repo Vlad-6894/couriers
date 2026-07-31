@@ -12,6 +12,7 @@ type AuthService struct {
 type AuthDatabaseRepository interface {
 	RegisterUser(ctx context.Context, user auth_domains.User) (auth_domains.User, error)
 	RegisterCourier(ctx context.Context, courier auth_domains.Courier) (auth_domains.Courier, error)
+	GetUser(ctx context.Context, login string) (auth_domains.User, error)
 }
 
 func NewAuthService(
