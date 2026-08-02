@@ -12,6 +12,7 @@ import (
 type Pool interface {
 	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
 	GetTimeot() time.Duration
+	Close()
 }
 
 type PostgresConnectionPool struct {

@@ -21,7 +21,7 @@ type HTTPServer struct {
 func NewHTTPServer(
 	config HTTPServerConfig,
 	log *pkg_logger.Logger,
-	middleware []pkg_http_middleware.Middleware,
+	middleware ...pkg_http_middleware.Middleware,
 ) *HTTPServer {
 	return &HTTPServer{
 		mux:        http.NewServeMux(),

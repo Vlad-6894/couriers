@@ -14,11 +14,6 @@ type User struct {
 	City     string
 }
 
-var (
-	UninitializedID      = -1
-	UninitializedVersion = -1
-)
-
 func NewUser(
 	id int,
 	version int,
