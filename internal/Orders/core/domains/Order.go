@@ -1,5 +1,10 @@
 package orders_domains
 
+import (
+	pkg_errors "couriers/pkg/errors"
+	"fmt"
+)
+
 var (
 	UninitializedOrderID    = -1
 	UnitializedOrderVersion = -1
@@ -49,4 +54,16 @@ func NewOrder(
 		UserID:     userID,
 		CourierID:  courierID,
 	}
+}
+
+func (o Order) Validate() error {
+	if len([]rune(o.Name)) < 3 || len([]rune(o.Name)) > 20 {
+		return fmt.Errorf("chars in order name must be more 3 or less 20: %w", pkg_errors.ErrInvalidArgument)
+	}
+
+	if o.Price < 0 {
+		return fmt.Errorf("price must be positive or free: %w", pkg_errors.ErrInvalidArgument)
+	}
+
+	return nil
 }
