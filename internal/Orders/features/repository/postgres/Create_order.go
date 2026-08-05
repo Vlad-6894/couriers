@@ -32,13 +32,13 @@ func (d *DatabasePostgres) CreateOrder(
 	var orderModel OrderModel
 
 	if err := row.Scan(
-		orderModel.ID,
-		orderModel.Version,
-		orderModel.Name,
-		orderModel.Price,
-		orderModel.IsComplete,
-		orderModel.UserID,
-		orderModel.CourierID,
+		&orderModel.ID,
+		&orderModel.Version,
+		&orderModel.Name,
+		&orderModel.Price,
+		&orderModel.IsComplete,
+		&orderModel.UserID,
+		&orderModel.CourierID,
 	); err != nil {
 		return orders_domains.Order{}, fmt.Errorf("fail to scan order: %w", err)
 	}

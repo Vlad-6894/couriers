@@ -85,6 +85,18 @@ func Auth() Middleware {
 				return
 			}
 
+			path := r.URL.Path
+
+			if strings.HasPrefix(path, "api/v1/user") && claims.Role != pkg_jwt.User {
+				http.Error(w, "you are not user, but you try to use user's funcs!", http.StatusUnauthorized)
+				return
+			}
+
+			if strings.HasPrefix(path, "api/v1/courier") && claims.Role != pkg_jwt.Courier {
+				http.Error(w, "you are not courier, but you try to use courier's funcs!", http.StatusUnauthorized)
+				return
+			}
+
 			ctx := r.Context()
 			ctx = pkg_jwt.PersonIDToContext(ctx, claims.PersonID)
 			ctx = pkg_jwt.RoleToContext(ctx, claims.Role)

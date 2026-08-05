@@ -20,6 +20,17 @@ type Order struct {
 	CourierID  *int
 }
 
+type GetOrder struct {
+	ID           int
+	Version      int
+	Name         string
+	Price        int
+	IsComplete   bool
+	UserID       int
+	CourierID    *int
+	CourierLogin *string
+}
+
 func NewUnitializedOrder(
 	name string,
 	price int,
@@ -53,6 +64,28 @@ func NewOrder(
 		IsComplete: isComplete,
 		UserID:     userID,
 		CourierID:  courierID,
+	}
+}
+
+func NewGetOrder(
+	id int,
+	version int,
+	name string,
+	price int,
+	isComplete bool,
+	userID int,
+	courierID *int,
+	courierLogin *string,
+) GetOrder {
+	return GetOrder{
+		ID:           id,
+		Version:      version,
+		Name:         name,
+		Price:        price,
+		IsComplete:   isComplete,
+		UserID:       userID,
+		CourierID:    courierID,
+		CourierLogin: courierLogin,
 	}
 }
 

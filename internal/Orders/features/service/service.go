@@ -15,6 +15,13 @@ type DatabasePostgres interface {
 		ctx context.Context,
 		order orders_domains.Order,
 	) (orders_domains.Order, error)
+
+	GetOrders(
+		ctx context.Context,
+		personID int,
+		limit *int,
+		offset *int,
+	) ([]orders_domains.GetOrder, error)
 }
 
 type BrokerKafka interface {
