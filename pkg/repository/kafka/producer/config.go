@@ -18,7 +18,7 @@ type KafkaProducerConfig struct {
 func NewKafkaProducerConfig() (KafkaProducerConfig, error) {
 	var config KafkaProducerConfig
 
-	if err := envconfig.Process("KAFKA_PRODUCER_ORDERS", &config); err != nil {
+	if err := envconfig.Process("KAFKA_PRODUCER", &config); err != nil {
 		return KafkaProducerConfig{}, fmt.Errorf("fail to proccess kafka orders config: %w", err)
 	}
 
