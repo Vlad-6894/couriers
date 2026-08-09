@@ -31,6 +31,7 @@ type OrderResponseDTO struct {
 	Name       string `json:"order_name"`
 	Price      int    `json:"order_price"`
 	IsComplete bool   `json:"is_complete"`
+	City       string `json:"city"`
 	UserID     int    `json:"user_id"`
 	CourierID  *int   `json:"courier_id"`
 }
@@ -41,6 +42,8 @@ type GetOrderResponseDTO struct {
 	Name         string  `json:"order_name"`
 	Price        int     `json:"order_price"`
 	IsComplete   bool    `json:"is_complete"`
+	City         string  `json:"city"`
+	UserLogin    string  `json:"users_login"`
 	UserID       int     `json:"user_id"`
 	CourierID    *int    `json:"courier_id"`
 	CourierLogin *string `json:"courier_login"`
@@ -70,6 +73,8 @@ func NewGetOrderResponseDTO(
 	name string,
 	price int,
 	isComplete bool,
+	city string,
+	userLogin string,
 	userID int,
 	courierID *int,
 	courierLogin *string,
@@ -80,6 +85,8 @@ func NewGetOrderResponseDTO(
 		Name:         name,
 		Price:        price,
 		IsComplete:   isComplete,
+		City:         city,
+		UserLogin:    userLogin,
 		UserID:       userID,
 		CourierID:    courierID,
 		CourierLogin: courierLogin,

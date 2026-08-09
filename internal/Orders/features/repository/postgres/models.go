@@ -8,6 +8,7 @@ type OrderModel struct {
 	Name       string
 	Price      int
 	IsComplete bool
+	City       string
 	UserID     int
 	CourierID  *int
 }
@@ -18,6 +19,8 @@ type GetOrderModel struct {
 	Name         string
 	Price        int
 	IsComplete   bool
+	City         string
+	UserLogin    string
 	UserID       int
 	CourierID    *int
 	CourierLogin *string
@@ -30,6 +33,7 @@ func orderDomainFromModel(model OrderModel) orders_domains.Order {
 		model.Name,
 		model.Price,
 		model.IsComplete,
+		model.City,
 		model.UserID,
 		model.CourierID,
 	)
@@ -44,6 +48,8 @@ func getOrderDomainFromModel(model GetOrderModel) orders_domains.GetOrder {
 		model.Name,
 		model.Price,
 		model.IsComplete,
+		model.City,
+		model.UserLogin,
 		model.UserID,
 		model.CourierID,
 		model.CourierLogin,

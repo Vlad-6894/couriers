@@ -36,6 +36,11 @@ CREATE TABLE app.orders (
     name VARCHAR(20) NOT NULL CHECK(char_length(name) BETWEEN 3 AND 20),
     price BIGINT NOT NULL,
     is_complete BOOLEAN NOT NULL,
+    city VARCHAR(100) NOT NULL CHECK(
+        char_length(city) BETWEEN 1 AND 100
+        AND
+        city ~ '^[A-Z]'
+    ),
     user_id INTEGER NOT NULL,
     courier_id INTEGER,
 

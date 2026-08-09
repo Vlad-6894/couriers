@@ -12,6 +12,7 @@ import (
 type CreateOrderRequestDTO struct {
 	Name  string `json:"order_name"`
 	Price int    `json:"order_price"`
+	City  string `json:"city"`
 }
 
 type CreateOrderResponseDTO OrderResponseDTO
@@ -29,8 +30,9 @@ func (h *OrdersHTTPHandler) HandleCreateOrder(w http.ResponseWriter, r *http.Req
 	}
 
 	personID := pkg_jwt.PersonIDFromContext(ctx)
+	city := pkg_jwt.CityFromContext(ctx)
 
-	order := orderDomainFromCreateOrderDto(request, personID)
+	order := orderDomainFromCreateOrderDto(request, city, personID)
 
 	order, err := h.ordersService.CreateOrder(ctx, order)
 
@@ -44,7 +46,7 @@ func (h *OrdersHTTPHandler) HandleCreateOrder(w http.ResponseWriter, r *http.Req
 	responseHandler.ToJSONResponse(response, http.StatusCreated)
 }
 
-func orderDomainFromCreateOrderDto(dto CreateOrderRequestDTO, personID int) orders_domains.Order {
-	order := orders_domains.NewUnitializedOrder(dto.Name, dto.Price, personID)
+func orderDomainFromCreateOrderDto(dto CreateOrderRequestDTO, city string, personID int) orders_domains.Order {
+	order := orders_domains.NewUnitializedOrder(dto.Name, dto.Price, city, personID)
 	return order
 }

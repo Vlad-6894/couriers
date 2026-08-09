@@ -16,7 +16,7 @@ func (d *DatabasePostgres) GetOrders(
 	defer cancel()
 
 	sqlRequest := `
-	SELECT app.orders.id, version, name, price, is_complete, user_id, courier_id, app.couriers.login 
+	SELECT app.orders.id, version, name, price, is_complete, city, app.users.login, user_id, courier_id, app.couriers.login 
 	FROM app.orders LEFT JOIN app.couriers ON courier_id=app.couriers.id LEFT JOIN app.users 
 	ON user_id = app.users.id
 	WHERE app.users.id = $1;
@@ -38,6 +38,8 @@ func (d *DatabasePostgres) GetOrders(
 			&orderModel.Name,
 			&orderModel.Price,
 			&orderModel.IsComplete,
+			&orderModel.City,
+			&orderModel.UserLogin,
 			&orderModel.UserID,
 			&orderModel.CourierID,
 			&orderModel.CourierLogin,

@@ -15,7 +15,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - LOGGER_LEVEL=${LOGGER_LEVEL}
       - LOGGER_FOLDER=/app/out/logs
-      - JWT_SECRET = ${JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - ${PROJECT_ROOT}/out/logs:/app/out/logs
     ports:
