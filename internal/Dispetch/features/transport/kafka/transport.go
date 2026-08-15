@@ -2,9 +2,11 @@ package dispetch_kafka_transport
 
 import (
 	"context"
+	dispetch_domains "couriers/internal/Dispetch/core/domains"
 	pkg_logger "couriers/pkg/logger"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"
@@ -21,10 +23,16 @@ type DispetchOrdersService interface {
 		ctx context.Context,
 		orderId int,
 	) (bool, error)
+
+	DispetchOrder(
+		ctx context.Context,
+		order dispetch_domains.Order,
+	) error
 }
 
 var (
 	networkProto = "tcp"
+	waitTime     = 3 * time.Second
 )
 
 func NewDispetchOrdersKafkaConsumer(
@@ -102,13 +110,37 @@ func (c *DispetchOrdersKafkaConsumer) readPartition(ctx context.Context) {
 		if !isUnique {
 			c.log.Warn("idemtece! Found a dublicate!")
 			if err := c.CommitMessages(ctx, msg); err != nil {
-				c.log.Error("fail unmarshal message", zap.Error(err))
+				c.log.Error("fail commit message", zap.Error(err))
 				return
 			}
 			continue
 		}
 
-		// TODO
+		order := orderDomainFromEventOrderCreated(event)
 
+		if err := c.dispetchOrdersService.DispetchOrder(ctx, order); err != nil {
+			c.log.Error("error dispetch order from service: ", zap.Error(err))
+			time.Sleep(waitTime)
+			continue
+		}
+
+		if err := c.CommitMessages(ctx, msg); err != nil {
+			c.log.Error("fail commit message", zap.Error(err))
+			return
+		}
 	}
+}
+
+func orderDomainFromEventOrderCreated(event OrderCreatedEvent) dispetch_domains.Order {
+	order := dispetch_domains.NewOrder(
+		event.ID,
+		event.Version,
+		event.Name,
+		event.Price,
+		event.IsComplete,
+		event.City,
+		event.UserID,
+	)
+
+	return order
 }
