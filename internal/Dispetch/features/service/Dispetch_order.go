@@ -19,7 +19,7 @@ func (s *OrdersDispetchService) DispetchOrder(
 			if err != nil {
 				return fmt.Errorf("fail to get courier id: %w", err)
 			}
-			if err := s.broker.SendDispetchedOrder(ctx, order.ID, version, courierID); err != nil {
+			if err := s.broker.SendDispetchedOrder(ctx, order.ID, version, courierID, order.City); err != nil {
 				return fmt.Errorf("fail to send order to kafka: %w", err)
 			}
 		}
@@ -28,7 +28,11 @@ func (s *OrdersDispetchService) DispetchOrder(
 
 	}
 
-	if err := s.broker.SendDispetchedOrder(ctx, order.ID, version, courierID); err != nil {
+	if err := s.db.DoBusy(ctx, courierID, version); err != nil {
+		return fmt.Errorf("fail to do courier busy: %w", err)
+	}
+
+	if err := s.broker.SendDispetchedOrder(ctx, order.ID, version, courierID, order.City); err != nil {
 		return fmt.Errorf("fail to send order to kafka: %w", err)
 	}
 

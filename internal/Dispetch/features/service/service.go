@@ -13,6 +13,12 @@ type OrdersDispetchDatabase interface {
 		ctx context.Context,
 		city string,
 	) (int, int, error)
+
+	DoBusy(
+		ctx context.Context,
+		courierID int,
+		version int,
+	) error
 }
 
 type OrdersDispetchBroker interface {
@@ -21,6 +27,7 @@ type OrdersDispetchBroker interface {
 		orderID int,
 		version int,
 		courierID int,
+		city string,
 	) error
 }
 

@@ -2,6 +2,7 @@ package pkg_repository_redis
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -12,13 +13,11 @@ var (
 )
 
 func MapError(err error) error {
-	var Err error
+	Err := ErrUnknown
 
 	if errors.Is(err, redis.Nil) {
 		Err = ErrEmpty
-		return Err
 	}
 
-	Err = ErrUnknown
-	return Err
+	return fmt.Errorf("%w: %v", Err, err)
 }
