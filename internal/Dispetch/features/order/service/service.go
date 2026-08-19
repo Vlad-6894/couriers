@@ -1,6 +1,9 @@
 package dispetch_service
 
-import "context"
+import (
+	"context"
+	dispetch_domains "couriers/internal/Dispetch/core/domains"
+)
 
 type OrdersDispetchService struct {
 	db     OrdersDispetchDatabase
@@ -19,6 +22,10 @@ type OrdersDispetchDatabase interface {
 		courierID int,
 		version int,
 	) error
+
+	GetFreeCouriers(
+		ctx context.Context,
+	) ([]dispetch_domains.CourierInfo, error)
 }
 
 type OrdersDispetchBroker interface {
@@ -41,6 +48,11 @@ type OrdersDispetchCache interface {
 		ctx context.Context,
 		city string,
 	) (int, int, error)
+
+	UpdateCache(
+		ctx context.Context,
+		couriersByGroupCity map[string]map[int]dispetch_domains.FreeCourierInfo,
+	) error
 }
 
 func NewOrdersDispetchService(

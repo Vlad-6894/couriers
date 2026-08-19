@@ -9,6 +9,7 @@ import (
 )
 
 type ClientCacheRedis interface {
+	Pipeline() redis.Pipeliner
 	SPop(ctx context.Context, key string) *redis.StringCmd
 	SetNX(ctx context.Context, key string, value interface{}, expiration time.Duration) *redis.BoolCmd
 	GetTimeout() time.Duration
