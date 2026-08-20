@@ -45,11 +45,15 @@ func main() {
 
 	logger.Debug("init features!")
 
-	producer := orders_repository_kafka.NewOrdersKafkaProducer(
+	writer := pkg_kafka_producer.NewKafkaWriter(
 		pkg_kafka_producer.NewKafkaProducerConfigMust(),
+	)
+	defer writer.Close()
+
+	producer := orders_repository_kafka.NewOrdersKafkaProducer(
+		writer,
 		logger,
 	)
-	defer producer.Close()
 
 	ordersDatabase := orders_repository_posgres.NewDatabasePostgres(pool)
 

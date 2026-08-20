@@ -49,6 +49,8 @@ func ordersDtoFromDomains(orders []orders_domains.GetOrder) []GetOrderResponseDT
 			order.Name,
 			order.Price,
 			order.IsComplete,
+			order.City,
+			order.UserLogin,
 			order.UserID,
 			order.CourierID,
 			order.CourierLogin,

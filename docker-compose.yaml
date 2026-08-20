@@ -15,7 +15,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - LOGGER_LEVEL=${LOGGER_LEVEL}
       - LOGGER_FOLDER=/app/out/logs
-      - JWT_SECRET = ${JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - ${PROJECT_ROOT}/out/logs:/app/out/logs
     ports:
@@ -52,6 +52,38 @@ services:
       - "5051:5051"
     restart: always
 
+    dispetch:
+    build:
+      context: ${PROJECT_ROOT}
+      dockerfile: ${PROJECT_ROOT}/cmd/dispetch
+    container_name: orders-service
+    environment:
+      - POSTGRES_HOST=couriers-postgres-db
+      - POSTGRES_TIMEOUT=${POSTGRES_TIMEOUT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - LOGGER_LEVEL=${LOGGER_LEVEL}
+      - LOGGER_FOLDER=/app/out/logs
+      - KAFKA_ADDRESS=${KAFKA_ADDRESS}
+      - KAFKA_NUM_PARTITIONS=${KAFKA_NUM_PARTITIONS}
+      - KAFKA_CREATE_TIME=${KAFKA_CREATE_TIME}
+      - KAFKA_ADDRESS=${KAFKA_ADDRESS}
+      - KAFKA_PRODUCER_TOPIC=${KAFKA_PRODUCER_ORDERS_TOPIC}
+      - KAFKA_MAX_ATTEMPTS=${KAFKA_MAX_ATTEMPTS}
+      - KAFKA_WRITE_TIMEOUT=${KAFKA_WRITE_TIMEOUT}
+      - KAFKA_READ_TIMEOUT=${KAFKA_READ_TIMEOUT}
+      - KAFKA_ORDERS_DISPETCHED_TOPIC=${KAFKA_PRODUCER_ORDERS_DISPETCHED_TOPIC}
+      - KAFKA_CONSUMER_ADDRESS=${KAFKA_ADDRESS}
+      - KAFKA_CONSUMER_ORDERS_TOPIC=${KAFKA_PRODUCER_ORDERS_TOPIC}
+      - KAFKA_CONSUMER_CONFIRM_TOPIC=${CONFIRM_TOPIC}
+      - KAFKA_CONSUMER_ORDERS_GROUP_ID=${KAFKA_DISPETCH_CONSUMER_ORDERS_GROUP_ID}
+      - KAFKA_CONSUMER_CONFIRM_GROUP_ID=${KAFKA_DISPETCH_CONSUMER_CONFIRM_GROUP_ID}
+      - KAFKA_CONSUMER_COMMIT_INTERVAL=${KAFKA_COMMIT_INTERVAL}
+    volumes:
+      - ${PROJECT_ROOT}/out/logs:/app/out/logs
+    restart: always
+
   couriers-postgres-db:
     image: postgres:18.1-bookworm
     container_name: postgres-db
@@ -79,6 +111,8 @@ services:
     image: redis:8.6.1
     container_name: redis
     command: redis-server --requirepass ${REDIS_PASSWORD}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - ${PROJECT_ROOT}/out/redis_data:/data
     restart: always

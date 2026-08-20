@@ -47,7 +47,7 @@ func NewRegCourier(
 		Password:       password,
 		City:           city,
 		OrdersComplete: 0,
-		IsFree:         false,
+		IsFree:         true,
 	}
 }
 

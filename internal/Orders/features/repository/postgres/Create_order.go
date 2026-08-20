@@ -14,9 +14,9 @@ func (d *DatabasePostgres) CreateOrder(
 	defer cancel()
 
 	sqlRequest := `
-	INSERT INTO app.orders (name,price,is_complete,user_id,courier_id)
-	VALUES ($1,$2,$3,$4,$5)
-	RETURNING id, version, name, price, is_complete, user_id, courier_id;
+	INSERT INTO app.orders (name,price,is_complete,city,user_id,courier_id)
+	VALUES ($1,$2,$3,$4,$5,$6)
+	RETURNING id, version, name, price, is_complete, city, user_id, courier_id;
 	`
 
 	row := d.pool.QueryRow(
@@ -25,6 +25,7 @@ func (d *DatabasePostgres) CreateOrder(
 		order.Name,
 		order.Price,
 		order.IsComplete,
+		order.City,
 		order.UserID,
 		order.CourierID,
 	)
@@ -37,6 +38,7 @@ func (d *DatabasePostgres) CreateOrder(
 		&orderModel.Name,
 		&orderModel.Price,
 		&orderModel.IsComplete,
+		&orderModel.City,
 		&orderModel.UserID,
 		&orderModel.CourierID,
 	); err != nil {

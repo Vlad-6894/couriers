@@ -16,6 +16,7 @@ type Order struct {
 	Name       string
 	Price      int
 	IsComplete bool
+	City       string
 	UserID     int
 	CourierID  *int
 }
@@ -26,6 +27,8 @@ type GetOrder struct {
 	Name         string
 	Price        int
 	IsComplete   bool
+	City         string
+	UserLogin    string
 	UserID       int
 	CourierID    *int
 	CourierLogin *string
@@ -34,6 +37,7 @@ type GetOrder struct {
 func NewUnitializedOrder(
 	name string,
 	price int,
+	city string,
 	userID int,
 ) Order {
 	return Order{
@@ -42,6 +46,7 @@ func NewUnitializedOrder(
 		Name:       name,
 		Price:      price,
 		IsComplete: false,
+		City:       city,
 		UserID:     userID,
 		CourierID:  nil,
 	}
@@ -53,6 +58,7 @@ func NewOrder(
 	name string,
 	price int,
 	isComplete bool,
+	city string,
 	userID int,
 	courierID *int,
 ) Order {
@@ -62,6 +68,7 @@ func NewOrder(
 		Name:       name,
 		Price:      price,
 		IsComplete: isComplete,
+		City:       city,
 		UserID:     userID,
 		CourierID:  courierID,
 	}
@@ -73,6 +80,8 @@ func NewGetOrder(
 	name string,
 	price int,
 	isComplete bool,
+	city string,
+	userLogin string,
 	userID int,
 	courierID *int,
 	courierLogin *string,
@@ -83,6 +92,8 @@ func NewGetOrder(
 		Name:         name,
 		Price:        price,
 		IsComplete:   isComplete,
+		City:         city,
+		UserLogin:    userLogin,
 		UserID:       userID,
 		CourierID:    courierID,
 		CourierLogin: courierLogin,
@@ -96,6 +107,13 @@ func (o Order) Validate() error {
 
 	if o.Price < 0 {
 		return fmt.Errorf("price must be positive or free: %w", pkg_errors.ErrInvalidArgument)
+	}
+
+	if len([]rune(o.City)) < 1 || len([]rune(o.City)) > 100 {
+		return fmt.Errorf(
+			"login char length bigger 100 or less 1: %w",
+			pkg_errors.ErrInvalidArgument,
+		)
 	}
 
 	return nil

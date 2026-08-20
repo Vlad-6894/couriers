@@ -33,3 +33,23 @@ func NewKafkaProducerConfigMust() KafkaProducerConfig {
 
 	return config
 }
+
+func (p KafkaProducerConfig) GetAddr() string {
+	return p.Addr
+}
+
+func (p KafkaProducerConfig) GetTopic() string {
+	return p.Topic
+}
+
+func (p KafkaProducerConfig) GetMaxAttempts() int {
+	return p.MaxAttempts
+}
+
+func (p KafkaProducerConfig) GetWriteTimeout() time.Duration {
+	return p.WriteTimeout
+}
+
+func (p KafkaProducerConfig) GetReadTimeout() time.Duration {
+	return p.ReadTimeout
+}
