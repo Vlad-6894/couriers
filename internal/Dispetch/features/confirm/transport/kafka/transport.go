@@ -6,6 +6,7 @@ import (
 	pkg_logger "couriers/pkg/logger"
 	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -16,6 +17,7 @@ type ConfirmKafkaConsumer struct {
 	*kafka.Reader
 	dispetchConfirmService DispetchConfirmService
 	log                    *pkg_logger.Logger
+	wg                     *sync.WaitGroup
 }
 
 type DispetchConfirmService interface {
@@ -34,11 +36,13 @@ func NewConfirmKafkaConsumer(
 	reader *kafka.Reader,
 	dispetchConfirmService DispetchConfirmService,
 	log *pkg_logger.Logger,
+	wg *sync.WaitGroup,
 ) *ConfirmKafkaConsumer {
 	return &ConfirmKafkaConsumer{
 		Reader:                 reader,
 		dispetchConfirmService: dispetchConfirmService,
 		log:                    log,
+		wg:                     wg,
 	}
 }
 

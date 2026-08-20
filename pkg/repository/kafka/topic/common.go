@@ -14,8 +14,8 @@ var (
 	kafkaNetworkProto = "tcp"
 )
 
-func InitTopic(ctx context.Context, config KafkaTopicConfig) error {
-	conn, err := kafka.Dial(kafkaNetworkProto, config.BrokerAddrr)
+func InitTopic[T Topic](ctx context.Context, config T) error {
+	conn, err := kafka.Dial(kafkaNetworkProto, config.GetBrokerAddrr())
 	if err != nil {
 		return fmt.Errorf("fail connect to kafka cluster: %w", err)
 	}
@@ -35,12 +35,12 @@ func InitTopic(ctx context.Context, config KafkaTopicConfig) error {
 	defer controllerConn.Close()
 
 	topicConfig := kafka.TopicConfig{
-		Topic:             config.TopicName,
-		NumPartitions:     config.NumPartitions,
+		Topic:             config.GetTopicName(),
+		NumPartitions:     config.GetNumPartitions(),
 		ReplicationFactor: 1,
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, config.CreateTime)
+	ctx, cancel := context.WithTimeout(ctx, config.GetCreateTime())
 	defer cancel()
 
 	if err := controllerConn.CreateTopics(topicConfig); err != nil {

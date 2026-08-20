@@ -15,16 +15,16 @@ type KafkaWriter struct {
 	*kafka.Writer
 }
 
-func NewKafkaWriter(config KafkaProducerConfig) *KafkaWriter {
+func NewKafkaWriter(config Producer) *KafkaWriter {
 	return &KafkaWriter{
 		Writer: &kafka.Writer{
-			Addr:         kafka.TCP(config.Addr),
-			Topic:        config.Topic,
+			Addr:         kafka.TCP(config.GetAddr()),
+			Topic:        config.GetTopic(),
 			Balancer:     &kafka.LeastBytes{},
 			RequiredAcks: kafka.RequireAll,
-			MaxAttempts:  config.MaxAttempts,
-			ReadTimeout:  config.ReadTimeout,
-			WriteTimeout: config.WriteTimeout,
+			MaxAttempts:  config.GetMaxAttempts(),
+			ReadTimeout:  config.GetReadTimeout(),
+			WriteTimeout: config.GetWriteTimeout(),
 			Async:        false,
 		},
 	}

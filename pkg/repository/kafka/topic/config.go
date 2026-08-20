@@ -32,3 +32,19 @@ func NewKafkaTopicConfigMust() KafkaTopicConfig {
 
 	return config
 }
+
+func (c KafkaTopicConfig) GetBrokerAddrr() string {
+	return c.BrokerAddrr
+}
+
+func (c KafkaTopicConfig) GetTopicName() string {
+	return c.TopicName
+}
+
+func (c KafkaTopicConfig) GetNumPartitions() int {
+	return c.NumPartitions
+}
+
+func (c KafkaTopicConfig) GetCreateTime() time.Duration {
+	return c.CreateTime
+}

@@ -29,7 +29,7 @@ func NewApiVersionRouter(apiVersion ApiVersion, personRole PersonRole) *ApiVersi
 
 func (r *ApiVersionRouter) RegisterRoutes(routes ...Route) {
 	for _, route := range routes {
-		prefix := fmt.Sprintf("%s %s", route.Method, route.Path)
+		prefix := fmt.Sprintf("%s /api/v%s/%s/%s", route.Method, r.apiVersion, r.personRole, route.Path)
 
 		r.Handle(prefix, route.Handler)
 	}

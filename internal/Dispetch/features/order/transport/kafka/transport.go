@@ -6,6 +6,7 @@ import (
 	pkg_logger "couriers/pkg/logger"
 	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -16,6 +17,7 @@ type DispetchOrdersKafkaConsumer struct {
 	*kafka.Reader
 	dispetchOrdersService DispetchOrdersService
 	log                   *pkg_logger.Logger
+	wg                    *sync.WaitGroup
 }
 
 type DispetchOrdersService interface {
@@ -39,11 +41,13 @@ func NewDispetchOrdersKafkaConsumer(
 	reader *kafka.Reader,
 	dispetchOrdersService DispetchOrdersService,
 	log *pkg_logger.Logger,
+	wg *sync.WaitGroup,
 ) *DispetchOrdersKafkaConsumer {
 	return &DispetchOrdersKafkaConsumer{
 		Reader:                reader,
 		dispetchOrdersService: dispetchOrdersService,
 		log:                   log,
+		wg:                    wg,
 	}
 }
 
@@ -72,6 +76,7 @@ func (c *DispetchOrdersKafkaConsumer) Start(
 	}
 
 	for i := 1; i <= numWorkers; i++ {
+		c.wg.Add(1)
 		go c.readPartition(ctx)
 	}
 
@@ -79,6 +84,7 @@ func (c *DispetchOrdersKafkaConsumer) Start(
 }
 
 func (c *DispetchOrdersKafkaConsumer) readPartition(ctx context.Context) {
+	defer c.wg.Done()
 	for {
 		msg, err := c.Reader.FetchMessage(ctx)
 		if err != nil {

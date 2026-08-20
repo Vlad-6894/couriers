@@ -33,9 +33,9 @@ func NewHTTPServer(
 
 func (s *HTTPServer) RegisterRouters(routers ...*ApiVersionRouter) {
 	for _, router := range routers {
-		prefix := fmt.Sprintf("/api/%s/%s", router.apiVersion, router.personRole)
+		prefix := fmt.Sprintf("/api/v%s/%s", router.apiVersion, router.personRole)
 
-		s.mux.Handle(prefix+"/", http.StripPrefix(prefix, router))
+		s.mux.Handle(prefix+"/", router)
 	}
 }
 

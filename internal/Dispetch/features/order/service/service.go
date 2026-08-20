@@ -57,10 +57,12 @@ type OrdersDispetchCache interface {
 
 func NewOrdersDispetchService(
 	db OrdersDispetchDatabase,
+	cache OrdersDispetchCache,
 	broker OrdersDispetchBroker,
 ) *OrdersDispetchService {
 	return &OrdersDispetchService{
 		db:     db,
+		cache:  cache,
 		broker: broker,
 	}
 }
