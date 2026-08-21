@@ -79,6 +79,7 @@ func main() {
 	defer writer.Close()
 
 	kafkaConsumerConfig := dispetch_core_transport_kafka.NewKafkaConsumerConfigMust()
+
 	ordersReader := dispetch_core_transport_kafka.NewOrderReader(
 		kafkaConsumerConfig,
 	)
@@ -149,6 +150,7 @@ func main() {
 		logger.Info("stop program by syscall")
 	case err := <-errorsChan:
 		logger.Error("stop program by error:", zap.Error(err))
+		cancel()
 	}
 
 	done := make(chan struct{})

@@ -9,6 +9,9 @@ import (
 )
 
 type ClientCacheRedis interface {
+	ZRemRangeByLex(ctx context.Context, key string, min string, max string) *redis.IntCmd
+	ZScan(ctx context.Context, key string, cursor uint64, match string, count int64) *redis.ScanCmd
+	ZAdd(ctx context.Context, key string, members ...redis.Z) *redis.IntCmd
 	Pipeline() redis.Pipeliner
 	SPop(ctx context.Context, key string) *redis.StringCmd
 	SetNX(ctx context.Context, key string, value interface{}, expiration time.Duration) *redis.BoolCmd

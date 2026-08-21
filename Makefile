@@ -66,3 +66,27 @@ finish-kafka:
 
 print-jwt:
 	@openssl rand -hex 32
+
+start-auth-service:
+	@docker compose up -d auth
+
+finish-auth-service:
+	@docker compose down auth
+
+start-orders-service:
+	@docker compose up -d orders
+
+finish-auth-service:
+	@docker compose down orders
+
+start-dispetch-service:
+	@docker compose up -d dispetch
+
+finish-dispetch-service:
+	@docker compose down dispetch
+
+start-couriers-service:
+	@docker compose up -d couriers
+
+finish-couriers-service:
+	@docker compose down couriers
