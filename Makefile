@@ -76,7 +76,7 @@ finish-auth-service:
 start-orders-service:
 	@docker compose up -d orders
 
-finish-auth-service:
+finish-orders-service:
 	@docker compose down orders
 
 start-dispetch-service:
@@ -90,3 +90,6 @@ start-couriers-service:
 
 finish-couriers-service:
 	@docker compose down couriers
+
+start-unit-tests-auth-service:
+	@go test -v ./internal/Auth/features/service

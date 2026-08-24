@@ -28,13 +28,13 @@ func (h *CouriersHTTPHandler) Routes() []pkg_http_server.Route {
 	routes := []pkg_http_server.Route{
 		{
 			Method:  http.MethodGet,
-			Path:    "/order",
+			Path:    "/couriers/order",
 			Handler: h.HandleGetOrder,
 		},
 
 		{
 			Method:  http.MethodPatch,
-			Path:    "/order",
+			Path:    "/couriers/order",
 			Handler: h.HandleConfirm,
 		},
 	}
