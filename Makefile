@@ -93,3 +93,6 @@ finish-couriers-service:
 
 start-unit-tests-auth-service:
 	@go test -v ./internal/Auth/features/service
+
+start-integration-tests-auth-service:
+	@go test -v -tags=integration ./internal/Auth/features/repository/postgres
