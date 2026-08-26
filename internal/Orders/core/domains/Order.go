@@ -3,6 +3,7 @@ package orders_domains
 import (
 	pkg_errors "couriers/pkg/errors"
 	"fmt"
+	"unicode"
 )
 
 var (
@@ -116,5 +117,14 @@ func (o Order) Validate() error {
 		)
 	}
 
+	if !isUpper(o.City) {
+		return fmt.Errorf("first char in the city must be upper: %w", pkg_errors.ErrInvalidArgument)
+	}
+
 	return nil
+}
+
+func isUpper(str string) bool {
+	r := []rune(str)[0]
+	return unicode.IsUpper(r)
 }

@@ -91,8 +91,17 @@ start-couriers-service:
 finish-couriers-service:
 	@docker compose down couriers
 
+generate-mocks:
+	@go generate ./...
+
 start-unit-tests-auth-service:
 	@go test -v ./internal/Auth/features/service
 
 start-integration-tests-auth-service:
 	@go test -v -tags=integration ./internal/Auth/features/repository/postgres
+
+start-unit-tests-orders-service:
+	@go test -v ./internal/Orders/features/service
+
+start-integration-tests-orders-service:
+	@go test -v -tags=integration ./internal/Orders/features/repository/...

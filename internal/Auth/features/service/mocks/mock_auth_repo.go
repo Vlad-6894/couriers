@@ -11,7 +11,7 @@ package auth_mocks
 
 import (
 	context "context"
-	domains "couriers/internal/Auth/core/domains"
+	auth_domains "couriers/internal/Auth/core/domains"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -42,10 +42,10 @@ func (m *MockAuthDatabaseRepository) EXPECT() *MockAuthDatabaseRepositoryMockRec
 }
 
 // GetCourier mocks base method.
-func (m *MockAuthDatabaseRepository) GetCourier(ctx context.Context, login string) (domains.Courier, error) {
+func (m *MockAuthDatabaseRepository) GetCourier(ctx context.Context, login string) (auth_domains.Courier, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetCourier", ctx, login)
-	ret0, _ := ret[0].(domains.Courier)
+	ret0, _ := ret[0].(auth_domains.Courier)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -57,10 +57,10 @@ func (mr *MockAuthDatabaseRepositoryMockRecorder) GetCourier(ctx, login any) *go
 }
 
 // GetUser mocks base method.
-func (m *MockAuthDatabaseRepository) GetUser(ctx context.Context, login string) (domains.User, error) {
+func (m *MockAuthDatabaseRepository) GetUser(ctx context.Context, login string) (auth_domains.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUser", ctx, login)
-	ret0, _ := ret[0].(domains.User)
+	ret0, _ := ret[0].(auth_domains.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -72,10 +72,10 @@ func (mr *MockAuthDatabaseRepositoryMockRecorder) GetUser(ctx, login any) *gomoc
 }
 
 // RegisterCourier mocks base method.
-func (m *MockAuthDatabaseRepository) RegisterCourier(ctx context.Context, courier domains.Courier) (domains.Courier, error) {
+func (m *MockAuthDatabaseRepository) RegisterCourier(ctx context.Context, courier auth_domains.Courier) (auth_domains.Courier, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RegisterCourier", ctx, courier)
-	ret0, _ := ret[0].(domains.Courier)
+	ret0, _ := ret[0].(auth_domains.Courier)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -87,10 +87,10 @@ func (mr *MockAuthDatabaseRepositoryMockRecorder) RegisterCourier(ctx, courier a
 }
 
 // RegisterUser mocks base method.
-func (m *MockAuthDatabaseRepository) RegisterUser(ctx context.Context, user domains.User) (domains.User, error) {
+func (m *MockAuthDatabaseRepository) RegisterUser(ctx context.Context, user auth_domains.User) (auth_domains.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RegisterUser", ctx, user)
-	ret0, _ := ret[0].(domains.User)
+	ret0, _ := ret[0].(auth_domains.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
