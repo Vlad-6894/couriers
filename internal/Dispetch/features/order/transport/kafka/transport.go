@@ -30,6 +30,10 @@ type DispetchOrdersService interface {
 		ctx context.Context,
 		order dispetch_domains.Order,
 	) error
+
+	UpdateCache(
+		ctx context.Context,
+	) error
 }
 
 var (

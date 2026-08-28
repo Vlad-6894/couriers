@@ -44,7 +44,7 @@ func (r *DispetchRepositoryPostgres) SearchCourier(
 
 	sqlUpdateRequest := `
 	UPDATE app.couriers 
-	SET is_free = true, version = version + 1
+	SET is_free = false, version = version + 1
 	WHERE id = $1;
 	`
 	if _, err := tx.Exec(ctxWithTime, sqlUpdateRequest, courierID); err != nil {

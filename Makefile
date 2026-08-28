@@ -105,3 +105,9 @@ start-unit-tests-orders-service:
 
 start-integration-tests-orders-service:
 	@go test -v -tags=integration ./internal/Orders/features/repository/...
+
+start-unit-tests-dispetch-service-orders:
+	@go test -v ./internal/Dispetch/features/order/service
+
+start-unit-tests-dispetch-service-confirm:
+	@go test -v ./internal/Dispetch/features/confirm/service
