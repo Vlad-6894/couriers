@@ -111,3 +111,18 @@ start-unit-tests-dispetch-service-orders:
 
 start-unit-tests-dispetch-service-confirm:
 	@go test -v ./internal/Dispetch/features/confirm/service
+
+start-integration-tests-dispetch-service-orders-broker:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/kafka
+
+start-integration-tests-dispetch-service-orders-database:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/postgres
+
+start-integration-tests-dispetch-service-orders-cache:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/redis
+
+start-integration-tests-dispetch-service-confirm-database:
+	@go test -v -tags=integration ./internal/Dispetch/features/confirm/repository/postgres
+
+start-integration-tests-dispetch-service-confirm:
+	@go test -v -tags=integration ./internal/Dispetch/features/confirm/repository/...

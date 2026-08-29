@@ -14,7 +14,7 @@ func (r *ConfirmPostgresDatabase) ConfirmOrder(
 	confirm dispetch_domains.Confirm,
 ) error {
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, r.pool.GetTimeot())
-	cancel()
+	defer cancel()
 
 	tx, err := r.pool.BeginTx(ctxWithTimeout, pgx.TxOptions{})
 	if err != nil {
