@@ -126,3 +126,6 @@ start-integration-tests-dispetch-service-confirm-database:
 
 start-integration-tests-dispetch-service-confirm:
 	@go test -v -tags=integration ./internal/Dispetch/features/confirm/repository/...
+
+start-unit-tests-couriers-service:
+	@go test -v ./internal/Couriers/features/service
