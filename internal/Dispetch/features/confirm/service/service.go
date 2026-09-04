@@ -9,6 +9,7 @@ type DispetchConfirmService struct {
 	db DispetchPostgresDatabase
 }
 
+//go:generate mockgen -source=service.go -destination=mocks/mock_dispetch_confirm_repo.go -package=dispetch_confirm_mocks
 type DispetchPostgresDatabase interface {
 	ConfirmOrder(
 		ctx context.Context,

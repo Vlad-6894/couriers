@@ -11,7 +11,7 @@ func (r *DispetchRepositoryPostgres) GetFreeCouriers(
 	ctx context.Context,
 ) ([]dispetch_domains.CourierInfo, error) {
 	ctxWithTime, cancel := context.WithTimeout(ctx, r.pool.GetTimeot())
-	cancel()
+	defer cancel()
 
 	sqlRequest := `
 	SELECT id, version, city FROM app.couriers 
@@ -23,7 +23,7 @@ func (r *DispetchRepositoryPostgres) GetFreeCouriers(
 		err = pkg_postgres_pool.MapError(err)
 		return nil, fmt.Errorf("fail to get rows from database: %w", err)
 	}
-	rows.Close()
+	defer rows.Close()
 
 	models := make([]CourierInfoModel, 0)
 

@@ -10,6 +10,7 @@ type CouriersService struct {
 	broker CouriersBroker
 }
 
+//go:generate mockgen -source=service.go -destination=mocks/mock_couriers_repo.go -package=couriers_mocks
 type CouriersCache interface {
 	SaveToCache(
 		ctx context.Context,

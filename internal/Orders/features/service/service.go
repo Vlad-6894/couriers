@@ -10,6 +10,7 @@ type OrdersService struct {
 	broker BrokerKafka
 }
 
+//go:generate mockgen -source=service.go -destination=mocks/mock_orders_repo.go -package=orders_mocks
 type DatabasePostgres interface {
 	CreateOrder(
 		ctx context.Context,

@@ -13,7 +13,7 @@ func (r *DispetchRepositoryPostgres) SearchCourier(
 	city string,
 ) (int, int, error) {
 	ctxWithTime, cancel := context.WithTimeout(ctx, r.pool.GetTimeot())
-	cancel()
+	defer cancel()
 
 	var (
 		courierID int
@@ -28,7 +28,7 @@ func (r *DispetchRepositoryPostgres) SearchCourier(
 
 	sqlRequestSelect := `
 	SELECT id, version FROM app.couriers 
-	WHERE city = $1 AND is_free = false
+	WHERE city = $1 AND is_free = true
 	LIMIT 1
 	FOR UPDATE SKIP LOCKED;
 	`

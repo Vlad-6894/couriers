@@ -51,7 +51,7 @@ services:
     ports:
       - "5051:5051"
 
-    dispetch:
+  dispetch:
     build:
       context: ${PROJECT_ROOT}
       dockerfile: ${PROJECT_ROOT}/cmd/dispetch
@@ -86,7 +86,7 @@ services:
     volumes:
       - ${PROJECT_ROOT}/out/logs:/app/out/logs
 
-    couriers:
+  couriers:
     build:
       context: ${PROJECT_ROOT}
       dockerfile: ${PROJECT_ROOT}/cmd/couriers

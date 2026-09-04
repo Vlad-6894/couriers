@@ -22,6 +22,8 @@ func (s *OrdersDispetchService) DispetchOrder(
 			if err := s.broker.SendDispetchedOrder(ctx, order.ID, version, courierID, order.City); err != nil {
 				return fmt.Errorf("fail to send order to kafka: %w", err)
 			}
+
+			return nil
 		}
 
 		return fmt.Errorf("fail to cache: %w", err)

@@ -9,6 +9,7 @@ type AuthService struct {
 	db AuthDatabaseRepository
 }
 
+//go:generate mockgen -source=service.go -destination=mocks/mock_auth_repo.go -package=auth_mocks
 type AuthDatabaseRepository interface {
 	RegisterUser(ctx context.Context, user auth_domains.User) (auth_domains.User, error)
 	RegisterCourier(ctx context.Context, courier auth_domains.Courier) (auth_domains.Courier, error)

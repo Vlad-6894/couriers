@@ -14,7 +14,7 @@ func (s *AuthService) RegisterCourier(
 		return auth_domains.Courier{}, fmt.Errorf("Register Courier validate error: %w", err)
 	}
 
-	newCourier, err := s.RegisterCourier(ctx, courier)
+	newCourier, err := s.db.RegisterCourier(ctx, courier)
 	if err != nil {
 		return auth_domains.Courier{}, fmt.Errorf("Register Courier repository error: %w", err)
 	}

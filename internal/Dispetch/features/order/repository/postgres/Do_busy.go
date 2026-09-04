@@ -12,7 +12,7 @@ func (r *DispetchRepositoryPostgres) DoBusy(
 	version int,
 ) error {
 	ctxWithTime, cancel := context.WithTimeout(ctx, r.pool.GetTimeot())
-	cancel()
+	defer cancel()
 
 	sqlRequest := `
 	UPDATE app.couriers 

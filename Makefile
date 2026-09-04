@@ -76,7 +76,7 @@ finish-auth-service:
 start-orders-service:
 	@docker compose up -d orders
 
-finish-auth-service:
+finish-orders-service:
 	@docker compose down orders
 
 start-dispetch-service:
@@ -90,3 +90,48 @@ start-couriers-service:
 
 finish-couriers-service:
 	@docker compose down couriers
+
+generate-mocks:
+	@go generate ./...
+
+start-unit-tests-auth-service:
+	@go test -v ./internal/Auth/features/service
+
+start-integration-tests-auth-service:
+	@go test -v -tags=integration ./internal/Auth/features/repository/postgres
+
+start-unit-tests-orders-service:
+	@go test -v ./internal/Orders/features/service
+
+start-integration-tests-orders-service:
+	@go test -v -tags=integration ./internal/Orders/features/repository/...
+
+start-unit-tests-dispetch-service-orders:
+	@go test -v ./internal/Dispetch/features/order/service
+
+start-unit-tests-dispetch-service-confirm:
+	@go test -v ./internal/Dispetch/features/confirm/service
+
+start-integration-tests-dispetch-service-orders-broker:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/kafka
+
+start-integration-tests-dispetch-service-orders-database:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/postgres
+
+start-integration-tests-dispetch-service-orders-cache:
+	@go test -v -tags=integration ./internal/Dispetch/features/order/repository/redis
+
+start-integration-tests-dispetch-service-confirm-database:
+	@go test -v -tags=integration ./internal/Dispetch/features/confirm/repository/postgres
+
+start-integration-tests-dispetch-service-confirm:
+	@go test -v -tags=integration ./internal/Dispetch/features/confirm/repository/...
+
+start-unit-tests-couriers-service:
+	@go test -v ./internal/Couriers/features/service
+
+start-integration-tests-couriers-service-cache:
+	@go test -v -tags=integration ./internal/Couriers/features/repository/redis
+
+start-integration-tests-couriers-service-broker:
+	@go test -v -tags=integration ./internal/Couriers/features/repository/kafka

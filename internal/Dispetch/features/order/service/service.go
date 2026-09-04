@@ -11,6 +11,7 @@ type OrdersDispetchService struct {
 	broker OrdersDispetchBroker
 }
 
+//go:generate mockgen -source=service.go -destination=mocks/mock_dispetch_orders_repo.go -package=dispetch_orders_mocks
 type OrdersDispetchDatabase interface {
 	SearchCourier(
 		ctx context.Context,

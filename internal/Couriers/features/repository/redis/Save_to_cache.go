@@ -20,7 +20,7 @@ func (r *CouriersCache) SaveToCache(
 	order courier_domains.DispetchedOrder,
 ) error {
 	ctxWithTime, cancel := context.WithTimeout(ctx, r.client.GetTimeout())
-	cancel()
+	defer cancel()
 
 	value := fmt.Sprintf("%s:%s:%s", strconv.Itoa(order.CourierID), strconv.Itoa(order.OrderID), strconv.Itoa(order.Version))
 

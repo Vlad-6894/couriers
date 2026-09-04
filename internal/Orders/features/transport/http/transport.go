@@ -97,13 +97,13 @@ func (h *OrdersHTTPHandler) Routes() []pkg_http_server.Route {
 	routes := []pkg_http_server.Route{
 		{
 			Method:  http.MethodPost,
-			Path:    "/order",
+			Path:    "/orders/order",
 			Handler: h.HandleCreateOrder,
 		},
 
 		{
 			Method:  http.MethodGet,
-			Path:    "/order",
+			Path:    "/orders/order",
 			Handler: h.HandleGetOrders,
 		},
 	}
