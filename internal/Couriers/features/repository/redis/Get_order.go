@@ -13,9 +13,9 @@ func (r *CouriersCache) GetOrder(
 	personID int,
 ) (courier_domains.DispetchedOrder, error) {
 	ctxWithTime, cancel := context.WithTimeout(ctx, r.client.GetTimeout())
-	cancel()
+	defer cancel()
 
-	prefix := fmt.Sprintf("%s:", strconv.Itoa(personID))
+	prefix := fmt.Sprintf("%s:*", strconv.Itoa(personID))
 
 	courier, _, err := r.client.ZScan(ctxWithTime, keySets, 0, prefix, 100).Result()
 	if err != nil {

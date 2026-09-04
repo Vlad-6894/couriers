@@ -6,7 +6,7 @@ import (
 	dispetch_core_kafka_repozitory_topic "couriers/internal/Dispetch/core/repository/kafka/topic"
 	dispetch_core_transport_kafka "couriers/internal/Dispetch/core/transport/kafka"
 	dispetch_core_kafka_transport_topik "couriers/internal/Dispetch/core/transport/kafka/confirm/topik"
-	dispetch_confirm_repository_postgres "couriers/internal/Dispetch/features/confirm/repozitory/postgres"
+	dispetch_confirm_repository_postgres "couriers/internal/Dispetch/features/confirm/repository/postgres"
 	dispetch_confirm_service "couriers/internal/Dispetch/features/confirm/service"
 	dispetch_kafka_confirm_transport "couriers/internal/Dispetch/features/confirm/transport/kafka"
 	dispetch_kafka_repository "couriers/internal/Dispetch/features/order/repository/kafka"

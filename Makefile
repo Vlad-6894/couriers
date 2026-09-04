@@ -129,3 +129,9 @@ start-integration-tests-dispetch-service-confirm:
 
 start-unit-tests-couriers-service:
 	@go test -v ./internal/Couriers/features/service
+
+start-integration-tests-couriers-service-cache:
+	@go test -v -tags=integration ./internal/Couriers/features/repository/redis
+
+start-integration-tests-couriers-service-broker:
+	@go test -v -tags=integration ./internal/Couriers/features/repository/kafka
