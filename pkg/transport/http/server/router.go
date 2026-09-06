@@ -31,6 +31,6 @@ func (r *ApiVersionRouter) RegisterRoutes(routes ...Route) {
 	for _, route := range routes {
 		prefix := fmt.Sprintf("%s /api/v%s/%s/%s", route.Method, r.apiVersion, r.personRole, route.Path)
 
-		r.Handle(prefix, route.Handler)
+		r.ServeMux.HandleFunc(prefix, route.Handler)
 	}
 }

@@ -1,0 +1,194 @@
+basePath: /api/v1/your_role
+definitions:
+  couriers_pkg_transport_http_response.ErrorResponse:
+    properties:
+      Error:
+        example: full error text
+        type: string
+      Message:
+        example: message about error
+        type: string
+    type: object
+  internal_Auth_features_transport_http.CreateCourierResponseDTO:
+    properties:
+      City:
+        example: Moscow
+        type: string
+      Login:
+        example: "123456789"
+        type: string
+      Password:
+        example: "123456789"
+        type: string
+      User_ID:
+        example: 1
+        type: integer
+      Version:
+        example: 1
+        type: integer
+      is_free:
+        example: true
+        type: boolean
+      orders_complete:
+        example: 1
+        type: integer
+    type: object
+  internal_Auth_features_transport_http.CreateUserDTO:
+    properties:
+      City:
+        example: Moscow
+        type: string
+      Login:
+        example: "123456789"
+        type: string
+      Password:
+        example: "123456789"
+        type: string
+      User_ID:
+        example: 1
+        type: integer
+      User_version:
+        example: 1
+        type: integer
+    type: object
+  internal_Auth_features_transport_http.LoginRequestDTO:
+    properties:
+      Login:
+        example: "123456789"
+        type: string
+      Password:
+        example: "123456789"
+        type: string
+    type: object
+  internal_Auth_features_transport_http.RegisterRequestDTO:
+    properties:
+      City:
+        example: Moscow
+        type: string
+      Login:
+        example: "123456789"
+        type: string
+      Password:
+        example: "123456789"
+        type: string
+    type: object
+host: 127.0.0.1:5050
+info:
+  contact: {}
+  description: Auth service REST API scheme
+  title: Auth Service
+  version: "1.0"
+paths:
+  /couriers/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Аутентифицировать курьера в системе
+      parameters:
+      - description: тело запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_Auth_features_transport_http.LoginRequestDTO'
+      produces:
+      - text/plain
+      responses:
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+      summary: Аутентифицировать курьера
+      tags:
+      - couriers
+  /couriers/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Зарегистрировать нового курьера в системе
+      parameters:
+      - description: тело запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_Auth_features_transport_http.RegisterRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: успешно созданный курьер
+          schema:
+            $ref: '#/definitions/internal_Auth_features_transport_http.CreateCourierResponseDTO'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+      summary: Зарегистрировать курьера
+      tags:
+      - couriers
+  /users/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Аутентифицировать пользователя в системе
+      parameters:
+      - description: тело запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_Auth_features_transport_http.LoginRequestDTO'
+      produces:
+      - text/plain
+      responses:
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+      summary: Аутентифицировать пользователя
+      tags:
+      - users
+  /users/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Зарегистрировать нового пользовтаеля в системе
+      parameters:
+      - description: тело запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_Auth_features_transport_http.RegisterRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: успешно созданный пользовтаель
+          schema:
+            $ref: '#/definitions/internal_Auth_features_transport_http.CreateUserDTO'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/couriers_pkg_transport_http_response.ErrorResponse'
+      summary: Зарегистрировать пользователя
+      tags:
+      - users
+swagger: "2.0"

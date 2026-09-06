@@ -27,7 +27,9 @@ func CORS() Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			allowedOrigins := map[string]struct{}{
+				"http:localhost:5050": {},
 				"http:localhost:5051": {},
+				"http:localhost:5052": {},
 			}
 
 			origin := r.Header.Get(originKey)
@@ -198,6 +200,7 @@ func Panic() Middleware {
 
 			defer func() {
 				if p := recover(); p != nil {
+					log.Error("Panic", zap.Any("panic: ", p))
 					responseHandler.PanicResponse("Panic in the program!", p)
 				}
 			}()

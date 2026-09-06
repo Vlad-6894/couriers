@@ -10,6 +10,17 @@ import (
 
 type CreateCourierResponseDTO CourierResponseDTO
 
+// RegisterCourier godoc
+// @Summary Зарегистрировать курьера
+// @Description Зарегистрировать нового курьера в системе
+// @Tags couriers
+// @Accept json
+// @Produce json
+// @Param request body RegisterRequestDTO true "тело запроса"
+// @Success 201 {object} CreateCourierResponseDTO "успешно созданный курьер"
+// @Failure 400 {object} pkg_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} pkg_http_response.ErrorResponse "Internal server error"
+// @Router /couriers/auth/register [post]
 func (h *AuthHTTPHandler) HandleRegisterCourier(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := pkg_logger.FromContext(ctx)

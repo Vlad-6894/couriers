@@ -7,6 +7,16 @@ import (
 	"net/http"
 )
 
+// LoginCourier godoc
+// @Summary Аутентифицировать курьера
+// @Description Аутентифицировать курьера в системе
+// @Tags couriers
+// @Accept json
+// @Produce plain
+// @Param request body LoginRequestDTO true "тело запроса"
+// @Failure 400 {object} pkg_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} pkg_http_response.ErrorResponse "Internal server error"
+// @Router /couriers/auth/login [post]
 func (h *AuthHTTPHandler) HandleLoginCourier(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := pkg_logger.FromContext(ctx)

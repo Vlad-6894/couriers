@@ -10,6 +10,17 @@ import (
 
 type CreateUserDTO RegisterUserResponseDTO
 
+// RegisterUser godoc
+// @Summary Зарегистрировать пользователя
+// @Description Зарегистрировать нового пользовтаеля в системе
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body RegisterRequestDTO true "тело запроса"
+// @Success 201 {object} CreateUserDTO "успешно созданный пользовтаель"
+// @Failure 400 {object} pkg_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} pkg_http_response.ErrorResponse "Internal server error"
+// @Router /users/auth/register [post]
 func (h *AuthHTTPHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := pkg_logger.FromContext(ctx)

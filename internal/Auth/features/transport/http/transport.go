@@ -28,32 +28,32 @@ type AuthService interface {
 }
 
 type RegisterRequestDTO struct {
-	Login    string `json:"Login"`
-	Password string `json:"Password"`
-	City     string `json:"City"`
+	Login    string `json:"Login"      example:"123456789"`
+	Password string `json:"Password"   example:"123456789"`
+	City     string `json:"City"       example:"Moscow"`
 }
 
 type RegisterUserResponseDTO struct {
-	ID       int    `json:"User_ID"`
-	Version  int    `json:"User_version"`
-	Login    string `json:"Login"`
-	Password string `json:"Password"`
-	City     string `json:"City"`
+	ID       int    `json:"User_ID"        example:"1"`
+	Version  int    `json:"User_version"   example:"1"`
+	Login    string `json:"Login"          example:"123456789"`
+	Password string `json:"Password"       example:"123456789"`
+	City     string `json:"City"           example:"Moscow"`
 }
 
 type LoginRequestDTO struct {
-	Login    string `json:"Login"`
-	Password string `json:"Password"`
+	Login    string `json:"Login"          example:"123456789"`
+	Password string `json:"Password"       example:"123456789"`
 }
 
 type CourierResponseDTO struct {
-	ID             int    `json:"User_ID"`
-	Version        int    `json:"Version"`
-	Login          string `json:"Login"`
-	Password       string `json:"Password"`
-	City           string `json:"City"`
-	OrdersComplete int    `json:"orders_complete"`
-	IsFree         bool   `json:"is_free"`
+	ID             int    `json:"User_ID"                example:"1"`
+	Version        int    `json:"Version"                example:"1"`
+	Login          string `json:"Login"                  example:"123456789"`
+	Password       string `json:"Password"               example:"123456789"`
+	City           string `json:"City"                   example:"Moscow"`
+	OrdersComplete int    `json:"orders_complete"        example:"1"`
+	IsFree         bool   `json:"is_free"                example:"true"`
 }
 
 func NewAuthHTTPHandler(authService AuthService) *AuthHTTPHandler {
@@ -66,13 +66,13 @@ func (h *AuthHTTPHandler) UserRoutes() []pkg_http_server.Route {
 	return []pkg_http_server.Route{
 		{
 			Method:  http.MethodPost,
-			Path:    "/auth/register",
+			Path:    "auth/register",
 			Handler: h.HandleRegisterUser,
 		},
 
 		{
 			Method:  http.MethodPost,
-			Path:    "/auth/login",
+			Path:    "auth/login",
 			Handler: h.HandleLoginUser,
 		},
 	}
@@ -82,13 +82,13 @@ func (h *AuthHTTPHandler) CourierRoutes() []pkg_http_server.Route {
 	return []pkg_http_server.Route{
 		{
 			Method:  http.MethodPost,
-			Path:    "/auth/register",
+			Path:    "auth/register",
 			Handler: h.HandleRegisterCourier,
 		},
 
 		{
 			Method:  http.MethodPost,
-			Path:    "/auth/login",
+			Path:    "auth/login",
 			Handler: h.HandleLoginCourier,
 		},
 	}

@@ -7,6 +7,16 @@ import (
 	"net/http"
 )
 
+// LoginUser godoc
+// @Summary Аутентифицировать пользователя
+// @Description Аутентифицировать пользователя в системе
+// @Tags users
+// @Accept json
+// @Produce plain
+// @Param request body LoginRequestDTO true "тело запроса"
+// @Failure 400 {object} pkg_http_response.ErrorResponse "Bad request"
+// @Failure 500 {object} pkg_http_response.ErrorResponse "Internal server error"
+// @Router /users/auth/login [post]
 func (h *AuthHTTPHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := pkg_logger.FromContext(ctx)

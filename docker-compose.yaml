@@ -3,7 +3,7 @@ services:
   auth:
     build:
       context: ${PROJECT_ROOT}
-      dockerfile: ${PROJECT_ROOT}/cmd/auth
+      dockerfile: ${PROJECT_ROOT}/cmd/auth/Dockerfile
     container_name: auth-service
     environment:
       - HTTP_ADDR=:5050
@@ -24,7 +24,7 @@ services:
   orders:
     build:
       context: ${PROJECT_ROOT}
-      dockerfile: ${PROJECT_ROOT}/cmd/orders
+      dockerfile: ${PROJECT_ROOT}/cmd/orders/Dockerfile
     container_name: orders-service
     environment:
       - HTTP_ADDR=:5051
@@ -54,7 +54,7 @@ services:
   dispetch:
     build:
       context: ${PROJECT_ROOT}
-      dockerfile: ${PROJECT_ROOT}/cmd/dispetch
+      dockerfile: ${PROJECT_ROOT}/cmd/dispetch/Dockerfile
     container_name: dispetch-service
     environment:
       - POSTGRES_HOST=couriers-postgres-db
@@ -89,7 +89,7 @@ services:
   couriers:
     build:
       context: ${PROJECT_ROOT}
-      dockerfile: ${PROJECT_ROOT}/cmd/couriers
+      dockerfile: ${PROJECT_ROOT}/cmd/couriers/Dockerfile
     container_name: couriers-service
     environment:
       - HTTP_ADDR=:5052
@@ -164,3 +164,15 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/var/lib/kafka/data'
+  
+  swagger:
+    build:
+      context: ${PROJECT_ROOT}
+      dockerfile_inline: |
+        FROM golang:1.25-alpine
+        RUN apk add --no-cache git
+        RUN go install github.com/swaggo/swag/cmd/swag@v1.16.6
+        WORKDIR /code
+        ENTRYPOINT ["swag"]
+    volumes:
+      - ${PROJECT_ROOT}:/code

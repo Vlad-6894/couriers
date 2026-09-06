@@ -68,25 +68,25 @@ print-jwt:
 	@openssl rand -hex 32
 
 start-auth-service:
-	@docker compose up -d auth
+	@docker compose up auth -d --build
 
 finish-auth-service:
 	@docker compose down auth
 
 start-orders-service:
-	@docker compose up -d orders
+	@docker compose up -d orders --build
 
 finish-orders-service:
 	@docker compose down orders
 
 start-dispetch-service:
-	@docker compose up -d dispetch
+	@docker compose up -d dispetch --build
 
 finish-dispetch-service:
 	@docker compose down dispetch
 
 start-couriers-service:
-	@docker compose up -d couriers
+	@docker compose up -d couriers --build
 
 finish-couriers-service:
 	@docker compose down couriers
@@ -135,3 +135,14 @@ start-integration-tests-couriers-service-cache:
 
 start-integration-tests-couriers-service-broker:
 	@go test -v -tags=integration ./internal/Couriers/features/repository/kafka
+
+swagger-gen-auth:
+	@docker compose run --rm swagger \
+		init \
+		-g cmd/auth/main.go \
+		-o docs \
+		--parseInternal \
+		--parseDependency
+
+ps:
+	@docker compose ps

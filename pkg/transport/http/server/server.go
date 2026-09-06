@@ -2,12 +2,14 @@ package pkg_http_server
 
 import (
 	"context"
+	"couriers/docs"
 	pkg_logger "couriers/pkg/logger"
 	pkg_http_middleware "couriers/pkg/transport/http/middleware"
 	"errors"
 	"fmt"
 	"net/http"
 
+	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 )
 
@@ -37,6 +39,24 @@ func (s *HTTPServer) RegisterRouters(routers ...*ApiVersionRouter) {
 
 		s.mux.Handle(prefix+"/", router)
 	}
+}
+
+func (s *HTTPServer) RegisterSwagger() {
+	s.mux.Handle(
+		"/swagger/",
+		httpSwagger.Handler(
+			httpSwagger.URL("/swagger/doc.json"),
+		),
+	)
+
+	s.mux.HandleFunc(
+		"/swagger/auth/doc.json",
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(docs.SwaggerInfo.ReadDoc()))
+		},
+	)
 }
 
 func (s *HTTPServer) Run(ctx context.Context) error {

@@ -16,8 +16,15 @@ import (
 	"syscall"
 
 	"go.uber.org/zap"
+
+	_ "couriers/docs"
 )
 
+// @title Auth Service
+// @version 1.0
+// @description Auth service REST API scheme
+// @host 127.0.0.1:5050
+// @BasePath /api/v1/your_role
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
@@ -32,7 +39,7 @@ func main() {
 	logger.Debug("init connection pool!")
 	pool, err := pkg_postgres_pool.NewPostgresConnectionPool(ctx, pkg_postgres_pool.NewPostgresConnectionConfigMust())
 	if err != nil {
-		logger.Fatal("connection pool init error!")
+		logger.Fatal("connection pool init error!", zap.Error(err))
 	}
 	defer pool.Close()
 
@@ -53,13 +60,23 @@ func main() {
 		pkg_http_middleware.Panic(),
 	)
 
+	logger.Debug("Create User API router")
+
 	apiVersionRouterUsers := pkg_http_server.NewApiVersionRouter(pkg_http_server.ApiVersion1, pkg_jwt.User)
 	apiVersionRouterUsers.RegisterRoutes(authTransportHTTP.UserRoutes()...)
+
+	logger.Debug("Create Courier API router")
 
 	apiVersionRouterCouriers := pkg_http_server.NewApiVersionRouter(pkg_http_server.ApiVersion1, pkg_jwt.Courier)
 	apiVersionRouterCouriers.RegisterRoutes(authTransportHTTP.CourierRoutes()...)
 
 	httpServer.RegisterRouters(apiVersionRouterUsers, apiVersionRouterCouriers)
+
+	logger.Debug("Register swagger")
+
+	httpServer.RegisterSwagger()
+
+	logger.Debug("run http server")
 
 	if err := httpServer.Run(ctx); err != nil {
 		logger.Error("Error run HTTP server!", zap.Error(err))
